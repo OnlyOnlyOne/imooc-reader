@@ -4,7 +4,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:task="http://www.springframework.org/schema/task"
-
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="
             http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -13,7 +13,9 @@
             http://www.springframework.org/schema/task
             http://www.springframework.org/schema/task/spring-task.xsd
             http://www.springframework.org/schema/mvc
-            http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+            http://www.springframework.org/schema/mvc/spring-mvc.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <!--开启springMVC注解模式-->
     <context:component-scan base-package="com.imooc"/>
@@ -45,10 +47,45 @@
         </property>
     </bean>
     <!--说明了springmvc到底使用什么模版引擎-->
-    <bean id = "ViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+    <bean id="ViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
         <!--要区分这个的value和上面的value的场景问题，-->
         <property name="contentType" value="text/html;charset=utf-8"/>
         <property name="suffix" value=".ftl"/>
-
     </bean>
+
+    <!--MyBatis与spring的整合配置-->
+    <!--2.配置数据源-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url"
+                  value="jdbc:mysql://localhost:3306/imooc_reader?useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=Asia/Shanghai&amp;allowPublicKeyRetrieval=true"/>
+        <property name="username" value="root"/>
+        <property name="password" value="hwy"/>
+        <property name="initialSize" value="5"/>
+        <property name="maxActive" value="20"/>
+    </bean>
+
+    <!--最重要的一步-->
+    <!--SqlSessionFactoryBean用于根据配置信息创建SqlSessionFactory，不再需要我们自己编码创建-->
+    <!--原生MyBatis与Spring整合-->
+    <!--    <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
+    <bean id="sessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:mappers/*.xml"/>
+        <!-- 5.MyBatis配置文件地址-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+    </bean>
+    <!--4.配置Mapper扫描器-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.imooc.reader.mappers"/>
+    </bean>
+
+    <!--声明式事务配置 用于事务的打开、提交、和回滚-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--启用基于注解的声明式事务-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+
 </beans>
