@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <title>慕课书评网</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0,user-scalable=no">
@@ -13,11 +14,12 @@
         .highlight {
             color: red !important;
         }
-        a:active{
-            text-decoration: none!important;
+
+        a:active {
+            text-decoration: none !important;
         }
     </style>
-    
+
 
     <style>
         .container {
@@ -62,14 +64,22 @@
     </script>
     <script>
         // import {template} from "../../resources/art-template";
-
-        $(function () {
-            $.fn.raty.defaults.path="./resources/raty/lib/images"
+        $.fn.raty.defaults.path = "./resources/raty/lib/images";
+        //loadMore()加载更多数据
+        //isReset参数设置为true的时候，代表从第一页开始，否则按照nextPage查询后续页
+        function loadMore(isReset) {
+            if (isReset == true) {
+                $("#bookList").html("");
+                $("#nextPage").val(1);
+            }
+            var nextPage = $("#nextPage").val();
+            var categoryId = $("#categoryId").val();
+            var order = $("#order").val();
             $.ajax({
-                url:"books",
-                data:{p: 1},
+                url: "books",
+                data: {p: nextPage,"categoryId":categoryId,"order":order},
                 type: "get",
-                dataType:"json",
+                dataType: "json",
                 success: function (json) {
                     console.info(json);
                     var list = json.records;
@@ -81,11 +91,75 @@
                         $("#bookList").append(html);
                     }
                     //显示星型评价组件
-                    $(".stars").raty({readOnly:true});
+                    $(".stars").raty({readOnly: true});
+
+                    /*当前页数小于总页数*/
+                    /*控制是否显示加载更parseInt多、没有数据*/
+                    if (json.current < json.pages) {
+                        /*
+                        * //因为JS是弱类型语言，
+                        * json.current在当前的值可能是string类型，所以需要加parseInt强转*/
+                        $("#nextPage").val(parseInt(json.current) + 1);
+                        console.info($("#nextPage").val());
+                        $("#btnMore").show();
+                        $("#divNoMore").hide();
+                    } else {
+                        $("#btnMore").hide();
+                        $("#divNoMore").show();
+                    }
                 }
             })
+        }
+        $(function () {
+
+            // $.ajax({
+                // url: "books",
+                // data: {p: 1},
+                // type: "get",
+                // dataType: "json",
+                // success: function (json) {
+                //     // console.info(json);
+                //     var list = json.records;
+                //     for (var i = 0; i < list.length; i++) {
+                //         var book = json.records[i];
+                //         // var html = "<li>" + book.bookName + "</li>";
+                //         var html = template("tpl", book);
+                //         console.info(html);
+                //         $("#bookList").append(html);
+                //     }
+                //     //显示星型评价组件
+                //     $(".stars").raty({readOnly: true});
+                //
+                // }
+                loadMore(true);
+            // })
 
         });
+        //绑定加载更多按钮单击事件
+
+        $(function (){
+            $("#btnMore").click(function () {
+                loadMore();
+            })
+
+            $(".category").click(function () {
+                $(".category").removeClass("highlight");
+                $(".category").addClass("text-black-50");
+                $(this).addClass("highlight");
+                var categoryId = $(this).data("category");
+                $("#categoryId").val(categoryId);
+                loadMore(true);
+            })
+            $(".order").click(function () {
+                $(".order").removeClass("highlight");
+                $(".order").addClass("text-black-50");
+                $(this).addClass("highlight");
+                var order = $(this).data("order");
+                $("#order").val(order);
+                loadMore(true);
+            })
+
+        })
     </script>
 </head>
 <body>
@@ -94,14 +168,15 @@
         <ul class="nav">
             <li class="nav-item">
                 <a href="/">
-                    <img src="https://m.imooc.com/static/wap/static/common/img/logo2.png" class="mt-1" style="width: 100px">
+                    <img src="https://m.imooc.com/static/wap/static/common/img/logo2.png" class="mt-1"
+                         style="width: 100px">
                 </a>
             </li>
 
         </ul>
-                    <a href="/login.html" class="btn btn-light btn-sm">
-                <img style="width: 2rem;margin-top: -5px" class="mr-1" src="./images/user_icon.png">登录
-            </a>
+        <a href="/login.html" class="btn btn-light btn-sm">
+            <img style="width: 2rem;margin-top: -5px" class="mr-1" src="./images/user_icon.png">登录
+        </a>
     </nav>
     <div class="row mt-2">
 
@@ -111,21 +186,23 @@
         </div>
 
         <div class="col-8 mt-2">
-                <span data-category="-1" style="cursor: pointer" class="highlight  font-weight-bold category">全部</span>
-                |
-                    <#list categoryList as category>
-                    <a style="cursor: pointer" data-category="${category.categoryId}" class="text-black-50 font-weight-bold category">${category.categoryName}</a>
-                    <#if category_has_next>|</#if>
-                    </#list>
-
+            <span data-category="-1" style="cursor: pointer" class="highlight  font-weight-bold category">全部</span>
+            |
+            <#list categoryList as category>
+                <a style="cursor: pointer" data-category="${category.categoryId}"
+                   class="text-black-50 font-weight-bold category">${category.categoryName}</a>
+                <#if category_has_next>|</#if>
+            </#list>
 
 
         </div>
 
         <div class="col-8 mt-2">
-            <span data-order="quantity" style="cursor: pointer" class="order highlight  font-weight-bold mr-3">按热度</span>
+            <span data-order="quantity" style="cursor: pointer"
+                  class="order highlight  font-weight-bold mr-3">按热度</span>
 
-            <span data-order="score" style="cursor: pointer" class="order text-black-50 mr-3 font-weight-bold">按评分</span>
+            <span data-order="score" style="cursor: pointer"
+                  class="order text-black-50 mr-3 font-weight-bold">按评分</span>
         </div>
     </div>
     <div class="d-none">
@@ -135,7 +212,7 @@
     </div>
 
     <div id="bookList">
-    
+
 
     </div>
     <button type="button" id="btnMore" data-next-page="1" class="mb-5 btn btn-outline-primary btn-lg btn-block">
@@ -144,4 +221,5 @@
     <div id="divNoMore" class="text-center text-black-50 mb-5" style="display: none;">没有其他数据了</div>
 </div>
 
-</body></html>
+</body>
+</html>

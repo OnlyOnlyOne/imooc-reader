@@ -40,13 +40,12 @@ public class BookController {
      */
     @GetMapping("/books")
     @ResponseBody
-    public IPage<Book> selectBook(Integer p) {
-
+    public IPage<Book> selectBook(Integer p, Long categoryId, String order) {
         if (p == null) {
             p = 1;
         }
 //        IPage<Book> pageObject = bookService.paging(p, 10);
-        IPage<Book> pageObject = bookService.paging(p, 10);
+        IPage<Book> pageObject = bookService.paging(categoryId, order, p, 10);
         return pageObject;
     }
 

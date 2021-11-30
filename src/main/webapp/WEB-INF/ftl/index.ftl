@@ -64,12 +64,20 @@
     </script>
     <script>
         // import {template} from "../../resources/art-template";
-
-        $(function () {
-            $.fn.raty.defaults.path = "./resources/raty/lib/images"
+        $.fn.raty.defaults.path = "./resources/raty/lib/images";
+        //loadMore()加载更多数据
+        //isReset参数设置为true的时候，代表从第一页开始，否则按照nextPage查询后续页
+        function loadMore(isReset) {
+            if (isReset == true) {
+                $("#bookList").html("");
+                $("#nextPage").val(1);
+            }
+            var nextPage = $("#nextPage").val();
+            var categoryId = $("#categoryId").val();
+            var order = $("#order").val();
             $.ajax({
                 url: "books",
-                data: {p: 1},
+                data: {p: nextPage, "categoryId": categoryId, "order": order},
                 type: "get",
                 dataType: "json",
                 success: function (json) {
@@ -84,10 +92,75 @@
                     }
                     //显示星型评价组件
                     $(".stars").raty({readOnly: true});
+
+                    /*当前页数小于总页数*/
+                    /*控制是否显示加载更parseInt多、没有数据*/
+                    if (json.current < json.pages) {
+                        /*
+                        * //因为JS是弱类型语言，
+                        * json.current在当前的值可能是string类型，所以需要加parseInt强转*/
+                        $("#nextPage").val(parseInt(json.current) + 1);
+                        console.info($("#nextPage").val());
+                        $("#btnMore").show();
+                        $("#divNoMore").hide();
+                    } else {
+                        $("#btnMore").hide();
+                        $("#divNoMore").show();
+                    }
                 }
             })
+        }
+
+        $(function () {
+
+            // $.ajax({
+            // url: "books",
+            // data: {p: 1},
+            // type: "get",
+            // dataType: "json",
+            // success: function (json) {
+            //     // console.info(json);
+            //     var list = json.records;
+            //     for (var i = 0; i < list.length; i++) {
+            //         var book = json.records[i];
+            //         // var html = "<li>" + book.bookName + "</li>";
+            //         var html = template("tpl", book);
+            //         console.info(html);
+            //         $("#bookList").append(html);
+            //     }
+            //     //显示星型评价组件
+            //     $(".stars").raty({readOnly: true});
+            //
+            // }
+            loadMore(true);
+            // })
 
         });
+        //绑定加载更多按钮单击事件
+
+        $(function () {
+            $("#btnMore").click(function () {
+                loadMore();
+            })
+
+            $(".category").click(function () {
+                $(".category").removeClass("highlight");
+                $(".category").addClass("text-black-50");
+                $(this).addClass("highlight");
+                var categoryId = $(this).data("category");
+                $("#categoryId").val(categoryId);
+                loadMore(true);
+            })
+            $(".order").click(function () {
+                $(".order").removeClass("highlight");
+                $(".order").addClass("text-black-50");
+                $(this).addClass("highlight");
+                var order = $(this).data("order");
+                $("#order").val(order);
+                loadMore(true);
+            })
+
+        })
     </script>
 </head>
 <body>

@@ -10,9 +10,11 @@ public interface BookService {
     /**
      * Paging page.
      *
-     * @param page 页号
-     * @param row  每页记录数
-     * @return 分页对象
+     * @param categoryId 分类编号
+     * @param order      排序方式
+     * @param page       页号
+     * @param row        每页记录数
+     * @return 分页对象 page
      */
-    public IPage<Book> paging(Integer page, Integer row);
+    public IPage<Book> paging(Long categoryId, String order, Integer page, Integer row);
 }
