@@ -17,4 +17,43 @@ public interface BookService {
      * @return 分页对象 page
      */
     public IPage<Book> paging(Long categoryId, String order, Integer page, Integer row);
+
+    /**
+     * 根据图书id选择图书对象.
+     *
+     * @param bookId the book id
+     * @return the book
+     */
+    Book selectById(Long bookId);
+
+    /**
+     * Update evaluation. 更新图书评分/评价数量
+     */
+    public void updateEvaluation();
+
+    /**
+     * Create book book.
+     * 创建新的图书
+     *
+     * @param book the book
+     * @return the book
+     */
+    public Book createBook(Book book);
+
+    /**
+     * Update book book.
+     * 更新图书
+     *
+     * @param book the book 新图书数据
+     * @return the book 更新后的数据
+     */
+    public Book updateBook(Book book);
+
+    /**
+     * Delete book.
+     * 删除图书以及相关数据
+     *
+     * @param bookId the book id
+     */
+    public void deleteBook(Long bookId);
 }

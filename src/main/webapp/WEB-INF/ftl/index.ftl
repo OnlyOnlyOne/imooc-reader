@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="referrer" content="no-referrer"/>
     <meta charset="UTF-8">
     <title>慕课书评网</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0,user-scalable=no">
-    <link rel="stylesheet" href="./resources/bootstrap/bootstrap.css">
-    <link rel="stylesheet" href="./resources/raty/lib/jquery.raty.css">
-    <script src="./resources/jquery.3.3.1.min.js"></script>
-    <script src="./resources/bootstrap/bootstrap.min.js"></script>
-    <script src="./resources/art-template.js"></script>
-    <script src="./resources/raty/lib/jquery.raty.js"></script>
+    <link rel="stylesheet" href="/resources/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="/resources/raty/lib/jquery.raty.css">
+    <script src="/resources/jquery.3.3.1.min.js"></script>
+    <script src="/resources/bootstrap/bootstrap.min.js"></script>
+    <script src="/resources/art-template.js"></script>
+    <script src="/resources/raty/lib/jquery.raty.js"></script>
     <style>
         .highlight {
             color: red !important;
@@ -41,7 +42,7 @@
         <a href="/book/{{bookId}}" style="color: inherit">
             <div class="row mt-2 book">
                 <div class="col-4 mb-2 pr-2">
-                    <img class="img-fluid" src="{{cover}}">
+                    <img referrer="no-referrer|origin|unsafe-url" class="img-fluid" src="{{cover}}">
                 </div>
                 <div class="col-8  mb-2 pl-0">
                     <h5 class="text-truncate">{{bookName}}</h5>
@@ -169,15 +170,25 @@
         <ul class="nav">
             <li class="nav-item">
                 <a href="/">
-                    <img src="https://m.imooc.com/static/wap/static/common/img/logo2.png" class="mt-1"
+                    <img referrer="no-referrer|origin|unsafe-url"
+                         src="https://m.imooc.com/static/wap/static/common/img/logo2.png" class="mt-1"
                          style="width: 100px">
                 </a>
             </li>
 
         </ul>
-        <a href="/login.html" class="btn btn-light btn-sm">
-            <img style="width: 2rem;margin-top: -5px" class="mr-1" src="./images/user_icon.png">登录
-        </a>
+        <#if loginMember??>
+            <h6 class="mt-1">
+                <img style="width: 2rem;margin-top: -5px" referrer="no-referrer|origin|unsafe-url" class="mr-1"
+                     src="./images/user_icon.png">${loginMember.nickname}
+            </h6>
+        <#else>
+            <a href="/login.html" class="btn btn-light btn-sm">
+                <img style="width: 2rem;margin-top: -5px" referrer="no-referrer|origin|unsafe-url" class="mr-1"
+                     src="./images/user_icon.png">登录
+            </a>
+        </#if>
+
     </nav>
     <div class="row mt-2">
 
