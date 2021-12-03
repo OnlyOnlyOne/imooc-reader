@@ -87,5 +87,26 @@
     <!--启用基于注解的声明式事务-->
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
+    <!--配置Kaptcha-->
+    <bean id="kaptchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
+        <property name="config">
+            <bean class="com.google.code.kaptcha.util.Config">
+                <constructor-arg>
+                    <props>
+                        <!--图片不生成边框-->
+                        <prop key="kaptcha.border">no</prop>
+                        <!--验证码图片为120像素-->
+                        <prop key="kaptcha.image.width">120</prop>
+                        <!--字体为蓝色-->
+                        <prop key="kaptcha.textproducer.font.color">blue</prop>
+                        <!--字体大小40像素-->
+                        <prop key="kaptcha.textproducer.font.size">40</prop>
+                        <!--验证码是4个字符-->
+                        <prop key="keptcha.textproducer.char.length">4</prop>
+                    </props>
+                </constructor-arg>
+            </bean>
+        </property>
+    </bean>
 
 </beans>
