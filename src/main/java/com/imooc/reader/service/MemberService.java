@@ -28,6 +28,8 @@ public interface MemberService {
      */
     public Member checkLogin(String username, String password);
 
+    public Member selectById(Long id);
+
     /**
      * Select member read state member read state.
      * 获取阅读状态

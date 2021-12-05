@@ -172,4 +172,8 @@ public class MemberServiceImpl implements MemberService {
         evaluationMapper.updateById(evaluation);
         return evaluation;
     }
+
+    public Member selectById(Long id) {
+        return memberMapper.selectById(id);
+    }
 }

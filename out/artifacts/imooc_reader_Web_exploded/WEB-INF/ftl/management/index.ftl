@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,15 +36,14 @@
             <ul class="layui-nav layui-nav-tree">
 
 
-                    <li class="layui-nav-item layui-nav-itemed">
-                        <a href="javascript:void(0)">数据管理</a>
-                        <dl class="layui-nav-child module" data-node-id="xxx">
-                            <dd><a href="/management/book/index.html" target="ifmMain">图书管理</a></dd>
-                            <dd><a href="/management/book/description.html" target="ifmMain">短评管理
-                                </a></dd>
-                        </dl>
-                    </li>
-
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:void(0)">数据管理</a>
+                    <dl class="layui-nav-child module" data-node-id="xxx">
+                        <dd><a href="/management/book/index.html" target="ifmMain">图书管理</a></dd>
+                        <dd><a href="/management/evaluation/description.html" target="ifmMain">短评管理
+                            </a></dd>
+                    </dl>
+                </li>
 
 
             </ul>

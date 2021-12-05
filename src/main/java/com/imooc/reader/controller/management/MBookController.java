@@ -2,7 +2,9 @@ package com.imooc.reader.controller.management;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.imooc.reader.entity.Book;
+import com.imooc.reader.entity.Evaluation;
 import com.imooc.reader.service.BookService;
+import com.imooc.reader.service.EvaluationService;
 import com.imooc.reader.service.exception.BussinessException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -28,16 +30,14 @@ import java.util.Map;
 public class MBookController {
     @Resource
     private BookService bookService;
+    @Resource
+    private EvaluationService evaluationService;
 
     @GetMapping("/index.html")
     public ModelAndView showBook() {
         return new ModelAndView("/management/book");
     }
 
-    @GetMapping("/description.html")
-    public ModelAndView showDescription() {
-        return new ModelAndView("/management/description");
-    }
 
     /**
      * 文件上传
@@ -158,4 +158,25 @@ public class MBookController {
         }
         return result;
     }
+
+//    @GetMapping("/evalist")
+//    @ResponseBody
+//    public Map descriptionList(Integer page, Integer limit) {
+//
+//        if (page == null) {
+//            page = 1;
+//        }
+//        if (limit == null) {
+//            limit = 20;
+//        }
+//        IPage<Evaluation> pageObject = evaluationService.paging(null, null, page, limit);
+//        //直接返回layui是无法识别的
+//
+//        Map result = new HashMap();
+//        result.put("code", "0");
+//        result.put("msg", "success");
+//        result.put("data", pageObject.getRecords());
+//        result.put("count", pageObject.getTotal());
+//        return result;
+//    }
 }

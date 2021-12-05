@@ -64,26 +64,26 @@
             </#if>
 
             <#if loginMember ??>
-                <#--$("*[data-read-state]").click(function (){-->
-                <#--    var readState = $(this).data("read-data");-->
-                <#--    $.post("/update_read_state",{-->
-                <#--        memberId:${loginMember.memberId},-->
-                <#--        bookId:${book.bookId},-->
-                <#--        readState : readState-->
-                <#--    },function (json){-->
-                <#--        if(json.code=="0"){-->
-                <#--            $("*[data-read-state]").removeClass("highlight");-->
-                <#--            $("*[data-read-state='" + readState + "']").addClass("highlight");-->
-                <#--        }-->
-                <#--    },"json")-->
-                <#--})-->
+            <#--$("*[data-read-state]").click(function (){-->
+            <#--    var readState = $(this).data("read-data");-->
+            <#--    $.post("/update_read_state",{-->
+            <#--        memberId:${loginMember.memberId},-->
+            <#--        bookId:${book.bookId},-->
+            <#--        readState : readState-->
+            <#--    },function (json){-->
+            <#--        if(json.code=="0"){-->
+            <#--            $("*[data-read-state]").removeClass("highlight");-->
+            <#--            $("*[data-read-state='" + readState + "']").addClass("highlight");-->
+            <#--        }-->
+            <#--    },"json")-->
+            <#--})-->
             $("*[data-read-state]").click(function () {
                 //会员阅读状态
                 var readState = $(this).data("read-state");
                 //发送请求
                 $.post("/update_read_state", {
-                    memberId:${loginMember.memberId},
-                    bookId:${book.bookId},
+                    memberId: ${loginMember.memberId},
+                    bookId: ${book.bookId},
                     readState: readState
                 }, function (json) {
                     if (json.code == "0") {
@@ -99,32 +99,32 @@
             })
 
             //评论对话框提交数据
-            $("#btnSubmit").click(function(){
+            $("#btnSubmit").click(function () {
                 var score = $("#score").raty("score");//获取评分
                 var content = $("#content").val();
-                if(score == 0 || $.trim(content) == ""){
+                if (score == 0 || $.trim(content) == "") {
                     return;
                 }
-                $.post("/evaluate" , {
-                    score : score,
-                    bookId : ${book.bookId},
-                    memberId : ${loginMember.memberId},
-                    content : content
-                },function(json){
-                    if(json.code = "0"){
+                $.post("/evaluate", {
+                    score: score,
+                    bookId: ${book.bookId},
+                    memberId: ${loginMember.memberId},
+                    content: content
+                }, function (json) {
+                    if (json.code = "0") {
                         window.location.reload();//刷新当前页面
                     }
-                },"json")
+                }, "json")
             })
 
             //评论点赞
-            $("*[data-evaluation-id]").click(function(){
+            $("*[data-evaluation-id]").click(function () {
                 var evaluationId = $(this).data("evaluation-id");
-                $.post("/enjoy",{evaluationId:evaluationId},function(json){
-                    if(json.code == "0"){
+                $.post("/enjoy", {evaluationId: evaluationId}, function (json) {
+                    if (json.code == "0") {
                         $("*[data-evaluation-id='" + evaluationId + "'] span").text(json.evaluation.enjoy);
                     }
-                },"json")
+                }, "json")
             })
             </#if>
 
