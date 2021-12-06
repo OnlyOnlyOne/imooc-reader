@@ -34,7 +34,7 @@
         , page: true //开启分页
         , limit: 20
         , cols: [[ //表头
-            {field: "createTime", title: '发布时间', width: '200'}
+            {field: "createTime", title: '发布时间', width: '150'}
             , {field: 'content', title: '短评', width: '400'}
             , {
                 type: "space", title: '图书', width: '200', templet: function (d) {

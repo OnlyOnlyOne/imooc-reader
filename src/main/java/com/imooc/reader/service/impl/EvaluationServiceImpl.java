@@ -68,4 +68,16 @@ public class EvaluationServiceImpl implements EvaluationService {
         IPage<Evaluation> pageObject = evaluationMapper.selectPage(p, queryWrapper);
         return pageObject;
     }
+
+    @Override
+    public Evaluation selectById(Long evalutionId) {
+        Evaluation evaluation = evaluationMapper.selectById(evalutionId);
+        return evaluation;
+    }
+
+    @Override
+    public Evaluation updateEvaluation(Evaluation evaluation) {
+        evaluationMapper.updateById(evaluation);
+        return evaluation;
+    }
 }

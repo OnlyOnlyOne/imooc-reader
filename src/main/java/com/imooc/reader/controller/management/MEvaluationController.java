@@ -10,13 +10,12 @@ import com.imooc.reader.service.EvaluationService;
 import com.imooc.reader.service.MemberService;
 import com.sun.prism.impl.Disposer;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,5 +65,21 @@ public class MEvaluationController {
     @GetMapping("/description.html")
     public ModelAndView showDescription() {
         return new ModelAndView("/management/description");
+    }
+
+    @PostMapping("/disable")
+    @ResponseBody
+    public Map disable(Long evaluationId, String reason) {
+        Evaluation evaluation = evaluationService.selectById(evaluationId);
+        evaluation.setDisableReason(reason);
+        evaluation.setState("disable");
+        evaluation.setDisableTime(new Date());
+        evaluation = evaluationService.updateEvaluation(evaluation);
+        Map result = new HashMap();
+        result.put("code", "0");
+        result.put("msg", "success");
+        result.put("data", evaluation);
+        return result;
+
     }
 }

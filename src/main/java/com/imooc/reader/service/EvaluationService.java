@@ -11,5 +11,7 @@ public interface EvaluationService {
 
     public IPage<Evaluation> paging(Long evalutionId, String order, Integer page, Integer row);
 
+    public Evaluation selectById(Long evalutionId);
 
+    public Evaluation updateEvaluation(Evaluation evaluation);
 }
